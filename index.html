@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PattyCrochê - Arte Feita à Mão</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              patty: {
+                teal: '#4A7C85',      // Azul Petróleo
+                coral: '#D97B73',     // Rosa Coral
+                graphite: '#363E45',  // Cinza Chumbo
+                mustard: '#E8B675',   // Amarelo Mostarda
+                cream: '#FDFBF7',     // Background suave
+                white: '#FFFFFF'
+              }
+            },
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            keyframes: {
+              'fade-in-up': {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              'fade-in-left': {
+                '0%': { opacity: '0', transform: 'translateX(-30px)' },
+                '100%': { opacity: '1', transform: 'translateX(0)' },
+              },
+              'fade-in-right': {
+                '0%': { opacity: '0', transform: 'translateX(30px)' },
+                '100%': { opacity: '1', transform: 'translateX(0)' },
+              },
+              'scale-up': {
+                '0%': { opacity: '0', transform: 'scale(0.9)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              },
+              'float': {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-6px)' },
+              },
+              'slide-horizontal': {
+                '0%, 100%': { transform: 'translateX(0)' },
+                '50%': { transform: 'translateX(4px)' },
+              }
+            },
+            animation: {
+              'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+              'fade-in-left': 'fade-in-left 0.8s ease-out forwards',
+              'fade-in-right': 'fade-in-right 0.8s ease-out forwards',
+              'scale-up': 'scale-up 0.6s ease-out forwards',
+              'bounce-slow': 'bounce 3s infinite',
+              'float': 'float 3s ease-in-out infinite',
+              'slide-horizontal': 'slide-horizontal 1.5s ease-in-out infinite',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #FDFBF7;
+        color: #363E45;
+      }
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
