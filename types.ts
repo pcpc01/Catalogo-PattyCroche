@@ -10,6 +10,15 @@ export interface Product {
   description: string;
   isNew?: boolean;
   isOnSale?: boolean;
+  shopee_link?: string;
+  elo7_link?: string;
+  nuvemshop_link?: string;
+  width?: number;
+  height?: number;
+  length?: number;
+  weight?: number;
+  show_in_catalog?: boolean;
+  additional_images?: string[];
 }
 
 export interface CartItem extends Product {

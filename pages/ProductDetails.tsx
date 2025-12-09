@@ -25,6 +25,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
   const [isAdded, setIsAdded] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [activeImage, setActiveImage] = useState(product.image);
 
   // Share Modal State
   const [showShareModal, setShowShareModal] = useState(false);
@@ -36,6 +37,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
     document.title = `${product.name} | PattyCrochê`;
 
     // Reset state when product changes
+    setActiveImage(product.image);
     setQuantity(1);
     setIsAdded(false);
     setIsBuying(false);
@@ -133,17 +135,21 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
                 </span>
               )}
               <img
-                src={product.image}
+                src={activeImage}
                 alt={product.name}
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
             </div>
 
-            {/* Thumbnails (Mock) */}
+            {/* Thumbnails */}
             <div className="grid grid-cols-4 gap-4">
-              {[0, 1, 2, 3].map((idx) => (
-                <button key={idx} className={`rounded-lg overflow-hidden border-2 aspect-square ${idx === 0 ? 'border-patty-teal' : 'border-transparent hover:border-gray-300'}`}>
-                  <img src={product.image} alt="Thumbnail" className="w-full h-full object-cover" />
+              {[product.image, ...(product.additional_images || [])].map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(img)}
+                  className={`rounded-lg overflow-hidden border-2 aspect-square transition-all duration-200 ${activeImage === img ? 'border-patty-teal ring-2 ring-patty-teal/20' : 'border-transparent hover:border-gray-300'}`}
+                >
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -227,7 +233,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
                   ) : (
                     <>
                       <ShoppingBag size={18} className="mr-2" />
-                      Comprar Agora
+                      Encomendar Agora
                     </>
                   )}
                 </Button>

@@ -16,6 +16,13 @@ interface HomeProps {
 export const Home: React.FC<HomeProps> = ({ onNavigate, onViewDetails }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -40,11 +47,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewDetails }) => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://res.cloudinary.com/duljbwers/image/upload/v1764972922/Design_sem_nome_6_ao7dpz.png"
+            src="/hero-bg-3.png"
             alt="Crochet Workshop"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-right will-change-transform"
+            style={{ transform: `translateY(${scrollY * 0.5}px)` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-patty-teal/90 to-patty-graphite/40 mix-blend-multiply"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-patty-teal/90 via-patty-teal/20 to-transparent"></div>
         </div>
 
         {/* Content */}
@@ -91,12 +99,14 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewDetails }) => {
             { icon: Truck, title: "Envio para Todo Brasil", desc: "Receba seu pedido no conforto da sua casa." }
           ].map((item, index) => (
             <RevealOnScroll key={index} delay={index * 200} animation="scale">
-              <div className="text-center p-6 rounded-2xl bg-patty-cream hover:bg-white border border-transparent hover:border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 h-full">
-                <div className="w-16 h-16 bg-patty-teal/10 rounded-full flex items-center justify-center mx-auto mb-4 text-patty-teal">
-                  <item.icon size={32} />
+              <div className="h-full" style={{ transform: `translateY(${scrollY * (0.04 + index * 0.02)}px)` }}>
+                <div className="group text-center p-6 rounded-2xl bg-patty-cream hover:bg-white border border-transparent hover:border-patty-teal/20 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full cursor-default">
+                  <div className="w-16 h-16 bg-patty-teal/10 rounded-full flex items-center justify-center mx-auto mb-4 text-patty-teal group-hover:bg-patty-teal group-hover:text-white transition-all duration-300">
+                    <item.icon size={32} className="group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" />
+                  </div>
+                  <h3 className="font-serif text-xl font-bold text-patty-graphite mb-2">{item.title}</h3>
+                  <p className="text-gray-500">{item.desc}</p>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-patty-graphite mb-2">{item.title}</h3>
-                <p className="text-gray-500">{item.desc}</p>
               </div>
             </RevealOnScroll>
           ))}

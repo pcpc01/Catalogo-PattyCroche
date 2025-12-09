@@ -3,7 +3,7 @@ import { getProducts, getCategories } from '../services/productService';
 import { Category, PageName, Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { SectionHeader } from '../components/SectionHeader';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, ArrowUpDown } from 'lucide-react';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 
 interface CatalogProps {
@@ -14,6 +14,7 @@ interface CatalogProps {
 export const Catalog: React.FC<CatalogProps> = ({ onNavigate, onViewDetails }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('Todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOption, setSortOption] = useState<string>('promotional'); // Default sort
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>(['Todos']);
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,26 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, onViewDetails }) =
   const filteredProducts = products.filter(product => {
     const matchesCategory = activeCategory === 'Todos' || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const isVisible = product.show_in_catalog === true;
+    return matchesCategory && matchesSearch && isVisible;
+  }).sort((a, b) => {
+    switch (sortOption) {
+      case 'price-asc':
+        return a.price - b.price;
+      case 'price-desc':
+        return b.price - a.price;
+      case 'name-asc':
+        return a.name.localeCompare(b.name);
+      case 'name-desc':
+        return b.name.localeCompare(a.name);
+      case 'promotional':
+        // Items on sale first, then by newness (id)
+        if (a.isOnSale && !b.isOnSale) return -1;
+        if (!a.isOnSale && b.isOnSale) return 1;
+        return b.id - a.id;
+      default:
+        return 0;
+    }
   });
 
   return (
@@ -54,18 +74,43 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, onViewDetails }) =
       </RevealOnScroll>
 
       {/* Search Bar */}
+      {/* Search and Filter Bar */}
       <RevealOnScroll delay={100} animation="fade-up">
-        <div className="max-w-md mx-auto mb-8 relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400 group-focus-within:text-patty-teal transition-colors" />
+        <div className="max-w-2xl mx-auto mb-8 flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1 group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400 group-focus-within:text-patty-teal transition-colors" />
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar produtos..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="block w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-full leading-5 text-patty-graphite placeholder-gray-400 focus:outline-none focus:border-patty-teal focus:ring-1 focus:ring-patty-teal shadow-sm transition-all duration-300 hover:shadow-md"
+            />
           </div>
-          <input
-            type="text"
-            placeholder="Buscar produtos..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="block w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-full leading-5 text-patty-graphite placeholder-gray-400 focus:outline-none focus:border-patty-teal focus:ring-1 focus:ring-patty-teal shadow-sm transition-all duration-300 hover:shadow-md"
-          />
+
+          <div className="relative min-w-[200px]">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <ArrowUpDown className="h-4 w-4 text-gray-400" />
+            </div>
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className="appearance-none block w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-full leading-5 text-patty-graphite focus:outline-none focus:border-patty-teal focus:ring-1 focus:ring-patty-teal shadow-sm transition-all duration-300 hover:shadow-md cursor-pointer"
+            >
+              <option value="promotional">Destaques</option>
+              <option value="price-asc">Preço: Menor para Maior</option>
+              <option value="price-desc">Preço: Maior para Menor</option>
+              <option value="name-asc">Nome: A - Z</option>
+              <option value="name-desc">Nome: Z - A</option>
+            </select>
+            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+              <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
         </div>
       </RevealOnScroll>
 

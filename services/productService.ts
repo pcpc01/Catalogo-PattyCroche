@@ -18,6 +18,7 @@ export const getProducts = async (): Promise<Product[]> => {
         category: item.category || 'Outros',
         image: item.photo_url || item.image || 'https://via.placeholder.com/300', // Fallback image
         price: Number(item.base_price) || Number(item.price) || 0, // Prioritize base_price
+        additional_images: item.additional_images || [],
     }));
 };
 

@@ -48,6 +48,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
     }
   };
 
+  const getCleanDescription = (html: string) => {
+    let text = convertHtmlToMarkdown(html);
+
+    // Remove markdown syntax characters that might look messy in a plain text preview
+
+    // Remove bold/italic markers (**text** or __text__)
+    text = text.replace(/\*\*/g, '');
+    text = text.replace(/__/g, '');
+
+    // Remove header markers (# Title)
+    text = text.replace(/^\s*#+\s+/gm, '');
+
+    // Remove list bullets
+    text = text.replace(/^\s*[-*+]\s+/gm, '');
+
+    // Remove long separator lines
+    text = text.replace(/[-=_*]{3,}/g, ' ');
+
+    // Collapse whitespace
+    text = text.replace(/\s+/g, ' ');
+
+    return text.trim();
+  };
+
   return (
     <div className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full">
       {/* Image Container */}
@@ -91,7 +115,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
           {product.name}
         </h3>
         <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">
-          {convertHtmlToMarkdown(product.description)}
+          {getCleanDescription(product.description)}
         </p>
 
         <div className="flex flex-col items-center gap-3 mt-auto pt-4 border-t border-gray-100">
@@ -119,7 +143,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
             ) : (
               <>
                 <ShoppingBag size={16} />
-                Comprar
+                Encomendar
               </>
             )}
           </Button>
