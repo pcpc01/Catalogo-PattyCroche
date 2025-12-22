@@ -75,13 +75,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
   return (
     <div className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full">
       {/* Image Container */}
-      <div className="relative h-64 overflow-hidden bg-gray-100">
+      <div
+        className="relative aspect-square overflow-hidden bg-white flex items-center justify-center rounded-t-xl cursor-pointer"
+        onClick={() => onViewDetails && onViewDetails(product)}
+        title="Ver detalhes"
+      >
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          className={`w-full h-full object-cover transition-all duration-700 ${product.additional_images && product.additional_images.length > 0
+            ? 'group-hover:opacity-0 group-hover:scale-110'
+            : 'group-hover:scale-105'
+            }`}
         />
-        <div className="absolute inset-0 bg-patty-teal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        {product.additional_images && product.additional_images.length > 0 && (
+          <img
+            src={product.additional_images[0]}
+            alt={`${product.name} - vista alternativa`}
+            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transform scale-95 group-hover:scale-105 transition-all duration-700"
+          />
+        )}
+
+        <div className="absolute inset-0 bg-patty-teal/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
         {/* Quick Actions overlay */}
         <div className="absolute bottom-3 right-3 translate-y-12 group-hover:translate-y-0 transition-transform duration-300 flex gap-1 items-center">
@@ -111,7 +126,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
         <span className="text-xs font-medium text-patty-coral uppercase tracking-wider mb-2">
           {product.category}
         </span>
-        <h3 className="font-serif text-xl font-semibold text-patty-graphite mb-2 group-hover:text-patty-teal transition-colors">
+        <h3 className="text-xl font-semibold text-patty-graphite mb-2 group-hover:text-patty-teal transition-colors">
           {product.name}
         </h3>
         <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">

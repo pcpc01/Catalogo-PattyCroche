@@ -14,7 +14,7 @@ interface CatalogProps {
 export const Catalog: React.FC<CatalogProps> = ({ onNavigate, onViewDetails }) => {
   const [activeCategory, setActiveCategory] = useState<Category>('Todos');
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortOption, setSortOption] = useState<string>('promotional'); // Default sort
+  const [sortOption, setSortOption] = useState<string>('name-asc'); // Default sort: Name A - Z
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>(['Todos']);
   const [loading, setLoading] = useState(true);

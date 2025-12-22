@@ -26,3 +26,17 @@ export interface CartItem extends Product {
 }
 
 export type PageName = 'home' | 'catalog' | 'about' | 'contact' | 'cart' | 'product-details';
+
+export interface Order {
+  id?: number;
+  order_number: string;
+  customer_name: string;
+  customer_cep: string;
+  items: any[];
+  total_products: number;
+  shipping_cost: number;
+  shipping_method: string;
+  total_general: number;
+  status: string;
+  created_at?: string;
+}

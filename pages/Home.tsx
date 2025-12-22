@@ -66,7 +66,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewDetails }) => {
             </RevealOnScroll>
 
             <RevealOnScroll animation="fade-up" delay={200}>
-              <h1 className="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6">
+              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
                 Arte em <br />
                 <span className="text-patty-mustard">Cada Ponto</span>
               </h1>
@@ -104,7 +104,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewDetails }) => {
                   <div className="w-16 h-16 bg-patty-teal/10 rounded-full flex items-center justify-center mx-auto mb-4 text-patty-teal group-hover:bg-patty-teal group-hover:text-white transition-all duration-300">
                     <item.icon size={32} className="group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" />
                   </div>
-                  <h3 className="font-serif text-xl font-bold text-patty-graphite mb-2">{item.title}</h3>
+                  <h3 className="text-xl font-bold text-patty-graphite mb-2">{item.title}</h3>
                   <p className="text-gray-500">{item.desc}</p>
                 </div>
               </div>
