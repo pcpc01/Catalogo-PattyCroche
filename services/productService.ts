@@ -29,9 +29,10 @@ export const getCategories = async (): Promise<string[]> => {
 
     if (error) {
         console.error('Error fetching categories:', error);
-        return ['Todos', 'Amigurumi', 'Moda', 'Decoração', 'Infantil']; // Fallback
+        const fallback = ['Amigurumi', 'Moda', 'Decoração', 'Infantil'];
+        return ['Todos', ...fallback.sort((a, b) => a.localeCompare(b, 'pt-BR'))];
     }
 
-    const categories = Array.from(new Set(data.map((item: any) => item.category).filter(Boolean)));
-    return ['Todos', ...categories.sort()];
+    const categories = Array.from(new Set(data.map((item: any) => (item as any).category).filter(Boolean))) as string[];
+    return ['Todos', ...categories.sort((a, b) => a.localeCompare(b, 'pt-BR'))];
 };

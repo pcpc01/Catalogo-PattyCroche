@@ -2,13 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { Product, PageName } from '../types';
 import { Button } from '../components/Button';
-import { useCart } from '../context/CartContext';
+import { CEPModal } from '../components/CEPModal';
+
+
+
 import { getProducts } from '../services/productService';
 import {
-  ArrowLeft, Star, ShoppingBag, Truck, ShieldCheck, Heart,
-  Share2, Check, Minus, Plus, Loader2, X, Copy, Facebook,
+  ArrowLeft, Star, Heart, ShoppingBag,
+  Share2, Loader2, X, Copy, Facebook,
   Twitter, Linkedin, Link as LinkIcon, MessageCircle
 } from 'lucide-react';
+
 import ReactMarkdown from 'react-markdown';
 import { convertHtmlToMarkdown } from '../utils';
 import { ProductCard } from '../components/ProductCard';
@@ -20,17 +24,16 @@ interface ProductDetailsProps {
 }
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavigate, onViewDetails }) => {
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
-  const [isAdded, setIsAdded] = useState(false);
-  const [isBuying, setIsBuying] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+
   const [activeImage, setActiveImage] = useState(product.image);
 
   // Share Modal State
   const [showShareModal, setShowShareModal] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [showCepModal, setShowCepModal] = useState(false);
+
 
   useEffect(() => {
     // Document title
@@ -39,11 +42,9 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
 
     // Reset state when product changes
     setActiveImage(product.image);
-    setQuantity(1);
-    setIsAdded(false);
-    setIsBuying(false);
     setShowShareModal(false);
     setLinkCopied(false);
+
 
     // Find related products (same category, excluding current)
     const loadRelated = async () => {
@@ -67,30 +68,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
     };
   }, [product]);
 
-  const handleAddToCart = () => {
-    // Add product multiple times based on quantity
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
 
-    setIsAdded(true);
-    setTimeout(() => {
-      setIsAdded(false);
-    }, 2000);
-  };
-
-  const handleBuyNow = () => {
-    setIsBuying(true);
-    // Add product to cart before navigating
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
-
-    setTimeout(() => {
-      onNavigate('cart');
-      setIsBuying(false);
-    }, 800);
-  };
 
   const handleCopyLink = () => {
     // In a real app, use the actual URL. Here we mock or use window.location
@@ -198,66 +176,16 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
               );
             })()}
 
-            {/* Controls */}
-            {/* Controls */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8 pb-8 border-b border-gray-100">
-              <div className="flex items-center border border-gray-200 rounded-full w-max">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-9 h-9 flex items-center justify-center text-gray-500 hover:text-patty-teal transition-colors"
-                >
-                  <Minus size={16} />
-                </button>
-                <span className="w-8 text-center font-medium text-patty-graphite">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-9 h-9 flex items-center justify-center text-gray-500 hover:text-patty-teal transition-colors"
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-
+            <div className="flex gap-4 mb-8 pb-8 border-b border-gray-100">
               <div className="flex gap-3 flex-grow">
                 <Button
-                  onClick={handleAddToCart}
-                  variant="outline"
+                  onClick={() => setShowCepModal(true)}
                   size="sm"
-                  className={`flex-1 transition-all duration-300 ${isAdded
-                    ? '!bg-green-500 !border-green-500 !text-white transform scale-105 shadow-xl ring-4 ring-green-100'
-                    : 'hover:border-patty-teal hover:bg-patty-teal/5 active:scale-95'
-                    }`}
-                  disabled={isBuying || isAdded}
+                  variant="primary"
+                  className="flex-1 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:brightness-105 active:scale-95 py-3 text-lg"
                 >
-                  {isAdded ? (
-                    <span className="flex items-center justify-center font-bold animate-in fade-in zoom-in duration-300">
-                      <Check size={20} className="mr-2" />
-                      Adicionado!
-                    </span>
-                  ) : (
-                    "Adicionar ao Carrinho"
-                  )}
-                </Button>
-
-                <Button
-                  onClick={handleBuyNow}
-                  size="sm"
-                  className={`flex-1 shadow-lg transition-all duration-300 ${isBuying
-                    ? 'scale-95 opacity-90'
-                    : 'hover:-translate-y-1 hover:shadow-xl hover:brightness-105 active:scale-95'
-                    }`}
-                  disabled={isBuying}
-                >
-                  {isBuying ? (
-                    <span className="flex items-center justify-center">
-                      <Loader2 size={20} className="mr-2 animate-spin" />
-                      Processando...
-                    </span>
-                  ) : (
-                    <>
-                      <ShoppingBag size={18} className="mr-2" />
-                      Encomendar Agora
-                    </>
-                  )}
+                  <ShoppingBag size={20} className="mr-2" />
+                  Encomenda
                 </Button>
 
                 <button
@@ -401,6 +329,12 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product, onNavig
           </div>
         )
       }
+      <CEPModal
+        isOpen={showCepModal}
+        onClose={() => setShowCepModal(false)}
+        product={product}
+        quantity={1}
+      />
     </div >
   );
 };

@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Product, PageName } from '../types';
 import { Button } from './Button';
+import { CEPModal } from './CEPModal';
+
 import { Eye, ShoppingBag, Check, Share2, Loader2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { convertHtmlToMarkdown } from '../utils';
@@ -16,6 +18,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
   const { addToCart } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [isShared, setIsShared] = useState(false);
+  const [showCepModal, setShowCepModal] = useState(false);
+
 
   const handleAddToCart = () => {
     setIsLoading(true);
@@ -135,20 +139,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
 
         <div className="flex flex-col items-center gap-3 mt-auto pt-4 border-t border-gray-100">
           <button
-            onClick={handleAddToCart}
+            onClick={() => setShowCepModal(true)}
             className="text-lg font-bold text-patty-teal hover:text-patty-coral transition-all duration-300 transform hover:scale-105 cursor-pointer"
-            title="Adicionar ao Carrinho"
+            title="Encomendar"
             disabled={isLoading}
           >
             R$ {product.price.toFixed(2).replace('.', ',')}
           </button>
 
+
           <Button
             variant="primary"
             size="sm"
             className="w-full px-6 gap-2 transition-all duration-300"
-            onClick={handleAddToCart}
+            onClick={() => setShowCepModal(true)}
             disabled={isLoading}
+
           >
             {isLoading ? (
               <>
@@ -158,12 +164,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate, o
             ) : (
               <>
                 <ShoppingBag size={16} />
-                Encomendar
+                Encomenda
               </>
+
             )}
           </Button>
         </div>
       </div>
+      <CEPModal
+        isOpen={showCepModal}
+        onClose={() => setShowCepModal(false)}
+        product={product}
+      />
     </div>
   );
 };
