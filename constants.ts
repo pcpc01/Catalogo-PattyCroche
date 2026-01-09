@@ -74,5 +74,5 @@ export const PRODUCTS: Product[] = [
 
 export const CONTACT_INFO = {
   whatsapp: "(12) 98866-8359",
-  instagram: "@pattycroche"
+  instagram: "https://www.instagram.com/patty.croches2"
 };
