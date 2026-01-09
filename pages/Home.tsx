@@ -66,7 +66,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewDetails }) => {
             </RevealOnScroll>
 
             <RevealOnScroll animation="fade-up" delay={200}>
-              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight mb-6">
                 Arte em <br />
                 <span className="text-patty-mustard">Cada Ponto</span>
               </h1>

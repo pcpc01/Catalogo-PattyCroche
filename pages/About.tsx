@@ -21,8 +21,8 @@ export const About: React.FC = () => {
             <div className="relative">
               <div className="absolute top-4 -left-4 w-full h-full border-2 border-patty-mustard rounded-2xl z-0"></div>
               <img
-                src="https://picsum.photos/id/65/800/1000"
-                alt="Artesã trabalhando"
+                src="/sandra-patricia.jpg"
+                alt="Sandra Patrícia - Artesã"
                 className="relative z-10 w-full rounded-2xl shadow-xl object-cover aspect-[4/5]"
               />
               {/* Experience Badge */}
@@ -43,7 +43,7 @@ export const About: React.FC = () => {
 
               <div className="space-y-6 text-gray-600 leading-relaxed">
                 <p>
-                  Olá! Sou a Patrícia, a criadora da <strong>PattyCrochê</strong>. Minha jornada com as agulhas começou ainda na infância, observando minha avó criar toalhas e roupas incríveis apenas com um fio e uma agulha.
+                  Olá! Sou a <strong>Sandra Patrícia</strong>, a criadora da <strong>PattyCrochê</strong>. Minha jornada com as agulhas começou ainda na infância, observando minha avó criar toalhas e roupas incríveis apenas com um fio e uma agulha.
                 </p>
                 <p>
                   O que começou como um hobby terapêutico se transformou em uma verdadeira paixão e, posteriormente, em profissão. Acredito que o crochê não é apenas uma técnica manual, mas uma forma de transmitir carinho, conforto e personalidade.
@@ -55,7 +55,7 @@ export const About: React.FC = () => {
 
               {/* Signature Area */}
               <div className="mt-10 pt-8 border-t border-gray-200">
-                <p className="italic text-2xl text-patty-teal">Patrícia Silva</p>
+                <p className="italic text-2xl text-patty-teal">Sandra Patrícia</p>
                 <p className="text-sm text-gray-400">Fundadora & Artesã</p>
               </div>
             </RevealOnScroll>
